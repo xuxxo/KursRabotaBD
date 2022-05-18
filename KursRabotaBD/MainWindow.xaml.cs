@@ -24,7 +24,7 @@ namespace KursRabotaBD
 
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            mainClass.UpdateUsers();
+            mainClass.SaveChanges();
         }
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)
@@ -42,6 +42,14 @@ namespace KursRabotaBD
                 mainClass.SaveChanges();
             }
             
+        }
+
+        private void backupButton_Click(object sender, RoutedEventArgs e)
+        {
+            BackupWindow backupWindow = new BackupWindow();
+            
+            backupWindow.ShowDialog();
+
         }
     }
 }

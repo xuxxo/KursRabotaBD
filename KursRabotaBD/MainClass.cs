@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -29,10 +30,6 @@ namespace KursRabotaBD
                 // получаем объекты из бд и выводим на консоль
                 
         }
-         public void UpdateUsers()
-        {
-            db.SaveChanges();
-        }
 
         public void DeleteUser(int id)
         {
@@ -46,6 +43,29 @@ namespace KursRabotaBD
         public void SetDataGrid(ref DataGrid dtGrid)
         {
             _dtGrid = dtGrid;
+        }
+
+        public void SaveDB()
+        {
+            var date = DateTime.Now.ToString();
+            date = date.Replace(".", "_");
+            date = date.Replace(" ", "_");
+            date = date.Replace(":", "_");
+            //var query = "backup database master TO DISK='D:\\backup"+date+".bak'";
+            var query = "backup database master TO DISK='D:\\log.bak'";
+            db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+        }
+        public void SaveJournal()
+        {
+            var a = "EXEC sp_addumpdevice 'disk', 'dbbackup', 'D:\\log.bak'";
+            //db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, a);
+            var query = "backup log master to dbbackup WITH NO_TRUNCATE";
+            //string curFile = "D:\\log.bak";
+            //if(!File.Exists(curFile))
+            //{
+
+            //}
+            db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
         }
     }
 }

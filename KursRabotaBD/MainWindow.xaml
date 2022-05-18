@@ -5,14 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KursRabotaBD"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="500" ResizeMode="CanMinimize">
-    <DockPanel>
-        <DockPanel DockPanel.Dock="Bottom" >
-            <Button  x:Name="updateButton" Height="40" Content="0" Width="250" Click="updateButton_Click" />
-            <Button  x:Name="deleteButton" Height="40" Content="2" Width="250" Click="deleteButton_Click" />
-        </DockPanel>
+        Title="MainWindow" Height="650" Width="600" ResizeMode="CanMinimize">
+    <Grid>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Bottom">
+                <Button  x:Name="updateButton" Height="40" Content="Save" Width="200" Click="updateButton_Click" />
+                <Button  x:Name="deleteButton" Height="40" Content="Delete" Width="200" Click="deleteButton_Click" />
+                <Button  x:Name="backupButton" Height="40" Content="Backup" Width="200" Click="backupButton_Click">
+                </Button>
+            </DockPanel>
 
-        <DataGrid x:FieldModifier="public"  x:Name="dtGrid" d:ItemsSource="{d:Binding}" />
-    </DockPanel>
-    
+            <DataGrid x:FieldModifier="public"  x:Name="dtGrid" d:ItemsSource="{d:Binding}" />
+        </DockPanel>
+    </Grid>
+
 </Window>

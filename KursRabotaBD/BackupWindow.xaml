@@ -1,0 +1,17 @@
+﻿<Window x:Class="KursRabotaBD.BackupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KursRabotaBD"
+        mc:Ignorable="d"
+        Title="BackupWindow" Height="400" Width="400">
+    <Grid>
+        <Button Content="Восстановление базы данных" x:Name="recBase" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" Width="225" Height="35" Click="recBase_Click"/>
+        <Button Content="Восстановление журнала транзакций" x:Name="recJour" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Width="225" Height="35" Click="recJour_Click"/>
+        <Button Content="Сохранение базы данных" x:Name="saveBase" HorizontalAlignment="Center" Margin="0,225,0,0" VerticalAlignment="Top" Width="225" Height="35"/>
+        <Button Content="Сохранение журнала транзакций" x:Name="saveJour" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Width="225" Height="35"/>
+        
+
+    </Grid>
+</Window>
