@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -14,21 +16,12 @@ namespace KursRabotaBD
         public void FillTheGrid()
         {
             
+            db.Users.Load();
             
-            //    // создаем два объекта User
-            //    User user1 = new User { Name = "Tom", Age = 33 };
-            //    User user2 = new User { Name = "Sam", Age = 26 };
+            _dtGrid.ItemsSource = db.Users.Local.ToBindingList();
 
-            //    // добавляем их в бд
-            //    db.Users.Add(user1);
-            //    db.Users.Add(user2);
-            //    db.SaveChanges();
-                  db.Users.Load();
-                  
-                  _dtGrid.ItemsSource = db.Users.Local.ToBindingList();
-                  
-                // получаем объекты из бд и выводим на консоль
-                
+
+
         }
 
         public void DeleteUser(int id)
@@ -51,20 +44,37 @@ namespace KursRabotaBD
             date = date.Replace(".", "_");
             date = date.Replace(" ", "_");
             date = date.Replace(":", "_");
-            //var query = "backup database master TO DISK='D:\\backup"+date+".bak'";
-            var query = "backup database master TO DISK='D:\\log.bak'";
+            var query = "backup database test TO DISK='D:\\backup"+date+".bak'";
+            //var query = "backup database test TO DISK='D:\\log.bak'";
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
         }
         public void SaveJournal()
         {
-            var a = "EXEC sp_addumpdevice 'disk', 'dbbackup', 'D:\\log.bak'";
+            var a = "ALTER DATABASE test SET RECOVERY FULL";
             //db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, a);
-            var query = "backup log master to dbbackup WITH NO_TRUNCATE";
-            //string curFile = "D:\\log.bak";
-            //if(!File.Exists(curFile))
-            //{
+            var query = "backup log test to dbbackup";
 
-            //}
+            db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+        }
+        public void LoadBackup()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            
+            openFileDialog.InitialDirectory = "d:\\";
+            openFileDialog.Filter = "bak files (*.bak)|*.bak";
+            string filePath;
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                filePath = openFileDialog.FileName;
+                var query = $"USE master;RESTORE DATABASE test FROM DISK='{filePath}' WITH REPLACE";
+                db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+            }
+
+            
+        }
+
+        public void SendCustomQuery(string query)
+        {
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
         }
     }

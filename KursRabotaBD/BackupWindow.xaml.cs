@@ -19,20 +19,26 @@ namespace KursRabotaBD
     /// </summary>
     public partial class BackupWindow : Window
     {
+        readonly MainClass mainClass = new MainClass();
         public BackupWindow()
         {
             InitializeComponent();
         }
         private void recBase_Click(object sender, RoutedEventArgs e)
         {
-            MainClass mainClass = new MainClass();
+            
             mainClass.SaveDB();
         }
 
         private void recJour_Click(object sender, RoutedEventArgs e)
         {
-            MainClass mainClass = new MainClass();
+            
             mainClass.SaveJournal();
+        }
+
+        private void saveBase_Click(object sender, RoutedEventArgs e)
+        {
+            mainClass.LoadBackup();
         }
     }
 }

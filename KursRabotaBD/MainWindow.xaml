@@ -9,9 +9,11 @@
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Bottom">
-                <Button  x:Name="updateButton" Height="40" Content="Save" Width="200" Click="updateButton_Click" />
-                <Button  x:Name="deleteButton" Height="40" Content="Delete" Width="200" Click="deleteButton_Click" />
-                <Button  x:Name="backupButton" Height="40" Content="Backup" Width="200" Click="backupButton_Click">
+                <Button  x:Name="refreshButton" Height="40" Content="Refresh" Width="150" Click="refreshButton_Click" />
+                <Button  x:Name="updateButton" Height="40" Content="Save" Width="150" Click="updateButton_Click" />
+                <Button  x:Name="deleteButton" Height="40" Content="Delete" Width="150" Click="deleteButton_Click" />
+                <Button  x:Name="sqlButton" Height="40" Content="SQL" Width="150" Click="sqlButton_Click" />
+                <Button  x:Name="backupButton" Height="40" Content="Backup" Width="150" Click="backupButton_Click">
                 </Button>
             </DockPanel>
 

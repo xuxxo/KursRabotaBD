@@ -51,5 +51,21 @@ namespace KursRabotaBD
             backupWindow.ShowDialog();
 
         }
+
+        private void refreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            dtGrid.ItemsSource = null;
+            dtGrid.Columns.Clear();
+            mainClass.SetDataGrid(ref dtGrid);
+            mainClass.FillTheGrid();
+            
+
+        }
+
+        private void sqlButton_Click(object sender, RoutedEventArgs e)
+        {
+            SqlWindow sqlWindow = new SqlWindow();
+            sqlWindow.ShowDialog();
+        }
     }
 }
