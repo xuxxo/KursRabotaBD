@@ -42,10 +42,15 @@ namespace KursRabotaBD
             var date = DateTime.Now.ToString();
             date = date.Replace(".", "_");
             date = date.Replace(" ", "_");
+
             date = date.Replace(":", "_");
-            var query = "backup database test TO DISK='D:\\backup"+date+".bak'";
+
+            date = date.Replace("/", "_");
+            var query = "backup database test TO DISK='D:\\backup_" + date + ".bak'";
             //var query = "backup database test TO DISK='D:\\log.bak'";
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+            ShowSuccess();
+
         }
         public void SaveJournal()
         {
@@ -54,6 +59,8 @@ namespace KursRabotaBD
             var query = "backup log test to dbbackup";
 
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+            ShowSuccess();
+
         }
         public void LoadBackup()
         {
@@ -67,9 +74,11 @@ namespace KursRabotaBD
                 filePath = openFileDialog.FileName;
                 var query = $"USE master;RESTORE DATABASE test FROM DISK='{filePath}' WITH REPLACE";
                 db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                ShowSuccess();
+
             }
 
-            
+
         }
 
         public void LoadJournal()
@@ -83,8 +92,17 @@ namespace KursRabotaBD
             {
                 filePath = openFileDialog.FileName;
                 //var query = $"USE master;RESTORE LOG test FROM DISK='{filePath}'";
-                var query = $@"use master;RESTORE LOG test FROM DISK = '{filePath}' WITH FILE = 1, NORECOVERY";
-                db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                var query = $@"use master;RESTORE LOG test FROM DISK = '{filePath}'";
+                try
+                {
+                    db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                    ShowSuccess();
+                }
+                catch (Exception ex)
+                {
+
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
             }
 
 
@@ -93,6 +111,13 @@ namespace KursRabotaBD
         public void SendCustomQuery(string query)
         {
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+            ShowSuccess();
+
+        }
+
+        private void ShowSuccess()
+        {
+            System.Windows.MessageBox.Show("Операция выполнена успешно");
         }
     }
 }

@@ -27,23 +27,23 @@ namespace KursRabotaBD
         private void recBase_Click(object sender, RoutedEventArgs e)
         {
             
-            mainClass.SaveDB();
+            mainClass.LoadBackup();
         }
 
         private void recJour_Click(object sender, RoutedEventArgs e)
         {
             
-            mainClass.SaveJournal();
+            mainClass.LoadJournal();
         }
 
         private void saveBase_Click(object sender, RoutedEventArgs e)
         {
-            mainClass.LoadBackup();
+            mainClass.SaveDB();
         }
 
         private void saveJour_Click(object sender, RoutedEventArgs e)
         {
-            mainClass.LoadJournal();
+            mainClass.SaveJournal();
         }
     }
 }
