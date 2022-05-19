@@ -10,7 +10,7 @@
         <Button Content="Восстановление базы данных" x:Name="recBase" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" Width="225" Height="35" Click="recBase_Click"/>
         <Button Content="Восстановление журнала транзакций" x:Name="recJour" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Width="225" Height="35" Click="recJour_Click"/>
         <Button Content="Сохранение базы данных" x:Name="saveBase" HorizontalAlignment="Center" Margin="0,225,0,0" VerticalAlignment="Top" Width="225" Height="35" Click="saveBase_Click"/>
-        <Button Content="Сохранение журнала транзакций" x:Name="saveJour" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Width="225" Height="35"/>
+        <Button Content="Сохранение журнала транзакций" x:Name="saveJour" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Width="225" Height="35" Click="saveJour_Click"/>
         
 
     </Grid>

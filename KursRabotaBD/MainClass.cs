@@ -72,6 +72,24 @@ namespace KursRabotaBD
             
         }
 
+        public void LoadJournal()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.InitialDirectory = "d:\\";
+            openFileDialog.Filter = "bak files (*.bak)|*.bak";
+            string filePath;
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                filePath = openFileDialog.FileName;
+                //var query = $"USE master;RESTORE LOG test FROM DISK='{filePath}'";
+                var query = $@"use master;RESTORE LOG test FROM DISK = '{filePath}' WITH FILE = 1, NORECOVERY";
+                db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+            }
+
+
+        }
+
         public void SendCustomQuery(string query)
         {
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);

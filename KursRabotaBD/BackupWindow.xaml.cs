@@ -40,5 +40,10 @@ namespace KursRabotaBD
         {
             mainClass.LoadBackup();
         }
+
+        private void saveJour_Click(object sender, RoutedEventArgs e)
+        {
+            mainClass.LoadJournal();
+        }
     }
 }
