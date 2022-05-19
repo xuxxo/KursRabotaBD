@@ -1,0 +1,14 @@
+﻿<Window x:Class="KursRabotaBD.SqlWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KursRabotaBD"
+        mc:Ignorable="d"
+        Title="SqlWindow" Height="200" Width="500" ResizeMode="NoResize">
+    <Grid>
+        <TextBox x:Name="textBox" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="Введите запрос" VerticalAlignment="Top" Width="450" Height="115"/>
+        <Button Content="Send query" HorizontalAlignment="Center" Margin="0,0,0,5" VerticalAlignment="Bottom" Click="Button_Click"/>
+
+    </Grid>
+</Window>

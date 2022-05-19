@@ -5,7 +5,7 @@ namespace KursRabotaBD
     class UserContext : DbContext
     {
         public UserContext()
-            : base("KursRabotaBD.Properties.Settings.masterConnectionString")
+            : base("baseConnection")
         { }
 
         public DbSet<User> Users { get; set; }
