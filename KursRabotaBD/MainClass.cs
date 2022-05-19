@@ -15,12 +15,11 @@ namespace KursRabotaBD
         DataGrid _dtGrid;
         public void FillTheGrid()
         {
-            
+            db.Users.Local.Clear();
             db.Users.Load();
+            db.Users.ToList().ForEach(x=>db.Users.Local.Add(x));
             
             _dtGrid.ItemsSource = db.Users.Local.ToBindingList();
-
-
 
         }
 

@@ -54,11 +54,8 @@ namespace KursRabotaBD
 
         private void refreshButton_Click(object sender, RoutedEventArgs e)
         {
-            dtGrid.ItemsSource = null;
-            dtGrid.Columns.Clear();
-            mainClass.SetDataGrid(ref dtGrid);
             mainClass.FillTheGrid();
-            
+
 
         }
 
