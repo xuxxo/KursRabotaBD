@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace KursRabotaBD
@@ -37,54 +38,98 @@ namespace KursRabotaBD
             _dtGrid = dtGrid;
         }
 
-        public void SaveDB()
+        public void SaveDB(bool isInit = true)
         {
-            var date = DateTime.Now.ToString();
-            date = date.Replace(".", "_");
-            date = date.Replace(" ", "_");
-            date = date.Replace(":", "_");
-            var query = "backup database test TO DISK='D:\\backup"+date+".bak'";
-            //var query = "backup database test TO DISK='D:\\log.bak'";
-            db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
-        }
-        public void SaveJournal()
-        {
-            var a = "ALTER DATABASE test SET RECOVERY FULL";
-            //db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, a);
-            var query = "backup log test to dbbackup";
 
-            db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+
+            try
+            {
+
+                var query = "BACKUP DATABASE [test] TO  [kurs_backup_db] WITH NOFORMAT, " +
+                    (isInit ? "INIT" : "NOINIT") +
+                    ", SKIP, NOREWIND, NOUNLOAD";
+                db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                SaveJournal(true, true);
+                MessageBox.Show("Операция выполнена успешно");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+}
+        public void SaveJournal(bool isInit = false, bool isInnerFunc = false)
+        {
+            try
+            {
+                var query = "BACKUP LOG [test] TO  [kurs_backup_log] WITH NOFORMAT, " +
+                (isInit ? "INIT" : "NOINIT") +
+                ", SKIP, NOREWIND, NOUNLOAD";
+
+                db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                if (isInnerFunc)
+                {
+                    MessageBox.Show("Операция выполнена успешно");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public void LoadBackup()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            
-            openFileDialog.InitialDirectory = "d:\\";
-            openFileDialog.Filter = "bak files (*.bak)|*.bak";
-            string filePath;
-            if ((bool)openFileDialog.ShowDialog())
+            try
             {
-                filePath = openFileDialog.FileName;
-                var query = $"USE master;RESTORE DATABASE test FROM DISK='{filePath}' WITH REPLACE";
+                //string setting = "";
+                //var result = MessageBox.Show("Нужно ли в дальнейшем накатывать журнал?","?", MessageBoxButton.YesNo);
+                //if (result == MessageBoxResult.Yes)
+                //{
+                //    setting = "NORECOVERY";
+                //}
+                //if (result == MessageBoxResult.No)
+                //{
+                //    setting = "RECOVERY";
+                //}
+                var query = $@"USE [master];
+                            ALTER DATABASE [test] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+                            RESTORE DATABASE [test] FROM  [kurs_backup_db] WITH  FILE = 1,  RECOVERY,  NOUNLOAD,  REPLACE";
                 db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                MessageBox.Show("Операция выполнена успешно");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
 
-            
         }
 
         public void LoadJournal()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
 
-            openFileDialog.InitialDirectory = "d:\\";
-            openFileDialog.Filter = "bak files (*.bak)|*.bak";
-            string filePath;
-            if ((bool)openFileDialog.ShowDialog())
+            try
             {
-                filePath = openFileDialog.FileName;
-                //var query = $"USE master;RESTORE LOG test FROM DISK='{filePath}'";
-                var query = $@"use master;RESTORE LOG test FROM DISK = '{filePath}' WITH FILE = 1, NORECOVERY";
+                string query = $@"USE [master]; 
+                ALTER DATABASE [test] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; 
+                RESTORE DATABASE [test] FROM  [kurs_backup_db] WITH  FILE = 1,  NORECOVERY,  NOUNLOAD,  REPLACE ";
+                //db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                //var amount = Convert.ToUInt16(File.ReadAllText("amountOfLogs.txt"));
+                //query = string.Empty;
+                var amount = 4;
+                for (int i = 1; i < amount + 1; i++)
+                {
+                    query +=
+                        $"RESTORE LOG [test] FROM  [kurs_backup_log] WITH  FILE = {i},  NOUNLOAD, " + ((i == amount) ? "RECOVERY" : "NORECOVERY") + ";\n";
+                }
                 db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+                MessageBox.Show("Операция выполнена успешно");
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
 
 
