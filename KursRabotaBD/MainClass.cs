@@ -138,6 +138,13 @@ namespace KursRabotaBD
         public void SendCustomQuery(string query)
         {
             db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
+            ShowSuccess();
+
+        }
+
+        private void ShowSuccess()
+        {
+            System.Windows.MessageBox.Show("Операция выполнена успешно");
         }
     }
 }
