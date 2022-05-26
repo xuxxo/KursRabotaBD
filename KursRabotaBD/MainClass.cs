@@ -40,7 +40,7 @@ namespace KursRabotaBD
 
         public void SaveDB(bool isInit = true)
         {
-
+            File.WriteAllText("amountOfLogs.txt","0");
 
             try
             {
@@ -59,6 +59,9 @@ namespace KursRabotaBD
 }
         public void SaveJournal(bool isInit = false, bool isInnerFunc = false)
         {
+            var amount = Convert.ToByte(File.ReadAllText("amountOfLogs.txt"));
+            amount++;
+            File.WriteAllText("amountOfLogs.txt", amount.ToString());
             try
             {
                 var query = "BACKUP LOG [test] TO  [kurs_backup_log] WITH NOFORMAT, " +
@@ -66,7 +69,7 @@ namespace KursRabotaBD
                 ", SKIP, NOREWIND, NOUNLOAD";
 
                 db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
-                if (isInnerFunc)
+                if (!isInnerFunc)
                 {
                     MessageBox.Show("Операция выполнена успешно");
                 }
@@ -81,16 +84,6 @@ namespace KursRabotaBD
         {
             try
             {
-                //string setting = "";
-                //var result = MessageBox.Show("Нужно ли в дальнейшем накатывать журнал?","?", MessageBoxButton.YesNo);
-                //if (result == MessageBoxResult.Yes)
-                //{
-                //    setting = "NORECOVERY";
-                //}
-                //if (result == MessageBoxResult.No)
-                //{
-                //    setting = "RECOVERY";
-                //}
                 var query = $@"USE [master];
                             ALTER DATABASE [test] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
                             RESTORE DATABASE [test] FROM  [kurs_backup_db] WITH  FILE = 1,  RECOVERY,  NOUNLOAD,  REPLACE";
@@ -107,16 +100,15 @@ namespace KursRabotaBD
 
         public void LoadJournal()
         {
-
             try
             {
                 string query = $@"USE [master]; 
                 ALTER DATABASE [test] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; 
                 RESTORE DATABASE [test] FROM  [kurs_backup_db] WITH  FILE = 1,  NORECOVERY,  NOUNLOAD,  REPLACE ";
                 //db.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, query);
-                //var amount = Convert.ToUInt16(File.ReadAllText("amountOfLogs.txt"));
+                var amount = Convert.ToByte(File.ReadAllText("amountOfLogs.txt"));
                 //query = string.Empty;
-                var amount = 4;
+
                 for (int i = 1; i < amount + 1; i++)
                 {
                     query +=
